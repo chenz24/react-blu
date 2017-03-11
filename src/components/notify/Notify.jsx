@@ -40,7 +40,7 @@ class Notify extends React.Component {
     this.setState({
       isShow: true,
     });
-    this.timer = setTimeout(() => this.autoClose(), this.props.duration);
+    if (this.props.duration) this.timer = setTimeout(() => this.autoClose(), this.props.duration);
   }
 
   render() {
@@ -114,6 +114,7 @@ Notify.defaultProps = {
   duration: 4500,
   onClose: () => {},
   closable: true,
+  type: 'default',
 };
 
 export default Notify;
