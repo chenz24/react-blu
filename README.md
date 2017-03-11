@@ -1,6 +1,6 @@
-# React + React-Router3 + Mobx + Axios + Webpack2.2
+# React-Blu
 
-> ...
+> react version of Vue-Blu
 
 ## Usage
 
