@@ -1,0 +1,16 @@
+.popover-confirm{
+  max-width: 210px;
+}
+.popover-content{
+  .media-left{
+    font-size: 20px;
+    margin-right: .8rem;
+  }
+}
+.popover-footer{
+  text-align: right;
+  margin:0 14px 9px;
+  .button:not(:last-child) {
+    margin-right: 5px;
+  }
+}
