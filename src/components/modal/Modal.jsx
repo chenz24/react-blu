@@ -25,7 +25,7 @@ class Modal extends React.Component {
       this.props.onOk();
       this.props.onClose();
     }
-    this.props.onClose();
+    // this.props.onClose();
   }
 
   handleCancel() {

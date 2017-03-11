@@ -3,6 +3,7 @@ import Index from '../pages/Index';
 
 import Affix from '../pages/AffixPage';
 import NotifyPage from '../pages/NotifyPage';
+import ModalPage from '../pages/ModalPage';
 
 export default [
   {
@@ -24,6 +25,9 @@ export default [
     }, {
       path: 'notify',
       component: NotifyPage,
+    }, {
+      path: 'modal',
+      component: ModalPage,
     }],
   },
 ];

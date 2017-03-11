@@ -15,7 +15,6 @@ class Portal extends React.Component {
     if (this.props.isOpen) {
       this.openPortal();
     }
-    console.log(this.props.children);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -68,7 +67,7 @@ class Portal extends React.Component {
         resetPortalState();
       }
 
-      this.props.onClose();
+      // this.props.onClose();
     }
   }
 
@@ -95,7 +94,6 @@ class Portal extends React.Component {
   }
 
   render() {
-    console.log(this);
     return null;
   }
 
