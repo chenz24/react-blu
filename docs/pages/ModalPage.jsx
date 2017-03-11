@@ -55,7 +55,7 @@ class ModalPage extends React.Component {
       <div className="content" style={{ height: '10000px' }}>
         <h2>Modal 模态框</h2>
         <div className="box box-demo">
-          <Modal isOpen={this.state.isOpen} onClose={this.handleCloseModal} title="My modal">
+          <Modal isOpen={this.state.isOpen} onClose={this.handleCloseModal} title="My modal" transition="zoom">
             <div className="notification">
               <p>Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem. Praesent commodo
                 cursus magna, vel scelerisque nisl consectetur et. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.

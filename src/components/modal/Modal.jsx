@@ -10,10 +10,11 @@ class Modal extends React.Component {
     this.handleBackdropClose = this.handleBackdropClose.bind(this);
     this.handleOk = this.handleOk.bind(this);
     this.handleCancel = this.handleCancel.bind(this);
+    this.handleClose = this.handleClose.bind(this);
 
     this.isLoding = false;
     this.state = {
-      isShow: false,
+      isOpen: this.props.isOpen,
     };
   }
 
@@ -23,25 +24,39 @@ class Modal extends React.Component {
       this.props.onOk();
     } else {
       this.props.onOk();
-      this.props.onClose();
+      this.handleClose();
     }
     // this.props.onClose();
   }
 
   handleCancel() {
     this.props.onCancel();
-    this.props.onClose();
+    this.handleClose();
   }
 
   handleBackdropClose() {
     if (this.props.backdropClosable) {
-      this.props.onClose();
+      this.handleClose();
     }
   }
 
+  handleClose() {
+    this.setState({
+      isOpen: false,
+    });
+    setTimeout(this.props.onClose, 300);
+  }
+
+  // componentWillReceiveProps(nextProps) {
+  //   if (nextProps.isOpen !== this.props.isOpen) {
+  //     this.setState({
+  //       isOpen: nextProps.isOpen,
+  //     });
+  //   }
+  // }
+
   render() {
     const {
-      isOpen,
       title,
       width,
       okText,
@@ -59,6 +74,7 @@ class Modal extends React.Component {
       wrapClass,
     } = this.props;
 
+    const isOpen = this.state.isOpen;
     const modalClass = classNames('modal', 'align-baseline', 'is-active', { 'modal-hidden': !isOpen }, wrapClass);
 
     let headerEl = null;
@@ -68,7 +84,7 @@ class Modal extends React.Component {
         headerEl = (
           <header className="modal-card-head">
             <p className="modal-card-title">{title}</p>
-            <span className="close" onClick={this.handleCancel}>×</span>
+            <span className="close" onClick={this.handleClose}>×</span>
           </header>
         );
       }
@@ -92,7 +108,6 @@ class Modal extends React.Component {
         {backdrop ? <div className="modal-background" onClick={this.handleBackdropClose}></div> : null}
         <Transition
           in={isOpen}
-          className=""
           enteringClassName={transition}
           exitingClassName={transition}
           transitionAppear={true}
@@ -108,8 +123,7 @@ class Modal extends React.Component {
       </div>
     );
 
-    if (needPortal) return <Portal isOpen={isOpen}>{modalEL}</Portal>;
-    return modalEL;
+    return needPortal ? <Portal isOpen={isOpen}>{modalEL}</Portal> : modalEL;
   }
 }
 
