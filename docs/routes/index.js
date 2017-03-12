@@ -4,6 +4,7 @@ import Index from '../pages/Index';
 import Affix from '../pages/AffixPage';
 import NotifyPage from '../pages/NotifyPage';
 import ModalPage from '../pages/ModalPage';
+import DataTablePage from '../pages/DataTablePage';
 
 export default [
   {
@@ -28,6 +29,9 @@ export default [
     }, {
       path: 'modal',
       component: ModalPage,
+    }, {
+      path: 'datatable',
+      component: DataTablePage,
     }],
   },
 ];

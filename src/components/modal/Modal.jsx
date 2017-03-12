@@ -47,13 +47,13 @@ class Modal extends React.Component {
     setTimeout(this.props.onClose, 300);
   }
 
-  // componentWillReceiveProps(nextProps) {
-  //   if (nextProps.isOpen !== this.props.isOpen) {
-  //     this.setState({
-  //       isOpen: nextProps.isOpen,
-  //     });
-  //   }
-  // }
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.isOpen !== this.props.isOpen) {
+      this.setState({
+        isOpen: nextProps.isOpen,
+      });
+    }
+  }
 
   render() {
     const {

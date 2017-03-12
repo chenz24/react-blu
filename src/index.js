@@ -13,3 +13,6 @@ export { default as Affix } from './components/affix';
 
 export { default as Timeline } from './components/timeline/Timeline';
 export { default as TimelineItem } from './components/timeline/TimelineItem';
+
+export { default as DataTable } from './components/table/DataTable';
+
