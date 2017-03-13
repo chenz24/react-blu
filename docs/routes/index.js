@@ -5,6 +5,7 @@ import Affix from '../pages/AffixPage';
 import NotifyPage from '../pages/NotifyPage';
 import ModalPage from '../pages/ModalPage';
 import DataTablePage from '../pages/DataTablePage';
+import PaginationPage from '../pages/PaginationPage';
 
 export default [
   {
@@ -32,6 +33,9 @@ export default [
     }, {
       path: 'datatable',
       component: DataTablePage,
+    }, {
+      path: 'pagination',
+      component: PaginationPage,
     }],
   },
 ];

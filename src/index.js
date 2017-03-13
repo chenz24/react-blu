@@ -16,3 +16,5 @@ export { default as TimelineItem } from './components/timeline/TimelineItem';
 
 export { default as DataTable } from './components/table/DataTable';
 
+export { default as Pagination } from './components/pagination/Pagination';
+

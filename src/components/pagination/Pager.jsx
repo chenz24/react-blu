@@ -12,7 +12,7 @@ class Pager extends React.Component {
 
     return (
       <li>
-        <a className={activeClass} onClick={handleChangePage.bind(this, pageNo)}>{pageNo}</a>
+        <a className={activeClass} onClick={handleChangePage}>{pageNo}</a>
       </li>
     );
   }
@@ -22,7 +22,7 @@ Pager.propTypes = {
   isActive: React.PropTypes.bool,
   pageNo: React.PropTypes.number,
   size: React.PropTypes.string,
-  handleChangePage: React.propTypes.func,
+  handleChangePage: React.PropTypes.func,
 };
 
 export default Pager;
