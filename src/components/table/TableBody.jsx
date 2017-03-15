@@ -10,25 +10,35 @@ class TableBody extends React.Component {
       data,
       columns,
       rowClassName,
+      rowKey,
+      selectedRowKeys,
     } = this.props;
 
     return (
       <tbody>
       {data.map((row, index) => {
-        const key = `key-${index}`;
-
+        const key = row[rowKey];
         let className = '';
         if (rowClassName) {
           className = rowClassName(row, index);
         }
         return (
-          <tr key={key} className={classNames(className)}>
+          <tr key={`tr-${key}`} className={classNames(className)}>
             {columns.map((column, cellIndex) => {
               if (!column.visible) return null;
-              if (column.isIndex) return <td key={`cell-${index}-${cellIndex}`}>{index + 1}</td>;
-              if (column.isCheck) return <td>check</td>;
+              let isChecked = false;
+              if (column.isCheck && selectedRowKeys.indexOf(key) >= 0) isChecked = true;
               return (
-                <TableCell key={cellIndex} column={column} row={row}/>
+                <TableCell
+                  key={`cell-${index}-${cellIndex}`}
+                  column={column}
+                  row={row}
+                  rowIndex={index}
+                  cellIndex={cellIndex}
+                  rowKey={rowKey}
+                  onCheckChange={this.props.onCheckChange}
+                  isChecked={isChecked}
+                />
               );
             })}
           </tr>
@@ -45,6 +55,9 @@ TableBody.propTypes = {
   checkable: React.PropTypes.bool,
   showIndex: React.PropTypes.bool,
   rowClassName: React.PropTypes.func,
+  onCheckChange: React.PropTypes.func,
+  rowKey: React.PropTypes.string,
+  selectedRowKeys: React.PropTypes.array,
 };
 
 export default TableBody;

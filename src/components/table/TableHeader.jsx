@@ -2,6 +2,21 @@ import React from 'react';
 import classNames from 'classnames';
 
 class TableHeader extends React.Component {
+  constructor() {
+    super();
+
+    this.state = {
+      isChecked: false,
+    };
+    this.handleToggleCheckAll = this.handleToggleCheckAll.bind(this);
+  }
+
+  handleToggleCheckAll() {
+    this.setState({
+      isChecked: !this.state.isChecked,
+    }, this.props.toggleCheckAll(!this.state.isChecked));
+  }
+
   render() {
     const {
       columns,
@@ -17,7 +32,7 @@ class TableHeader extends React.Component {
           {columns.map((column, index) => {
             if (!column.visible) return null;
             if (column.isCheck) {
-              return <th><input type="checkbox"/></th>;
+              return <th key={`check-${index}`}><input type="checkbox" onChange={this.handleToggleCheckAll}/></th>;
             }
             if (column.isIndex) {
               return <th key={`index-${index}`}>#</th>;
@@ -36,7 +51,7 @@ class TableHeader extends React.Component {
             }
             return (
               <th
-                key={index}
+                key={index} // todo
                 className={classNames({ sortable: column.sorter })}
                 onClick={toggleSort.bind(this, column)}
               >
@@ -57,6 +72,8 @@ TableHeader.propTypes = {
   showIndex: React.PropTypes.bool,
   toggleSort: React.PropTypes.func,
   sortState: React.PropTypes.object,
+  toggleCheckAll: React.PropTypes.func,
+  selectedRowKeys: React.PropTypes.array,
 };
 
 export default TableHeader;

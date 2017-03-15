@@ -4,6 +4,7 @@ import classNames from 'classnames';
 import isFunction from 'lodash/isFunction';
 import sortBy from 'lodash/sortBy';
 
+import Pagination from '../pagination';
 import TableHeader from './TableHeader';
 import TableBody from './TableBody';
 
@@ -20,12 +21,17 @@ class DataTable extends React.Component {
       pagination: {},
       data: [],
       showData: [],
+      selectedRows: [],
+      selectedRowKeys: [],
     };
 
     this.handleInitColumns = this.handleInitColumns.bind(this);
     this.handleToggleSort = this.handleToggleSort.bind(this);
     this.handleReorganizeData = this.handleReorganizeData.bind(this);
     this.handleTableChange = this.handleTableChange.bind(this);
+    this.handlePageChange = this.handlePageChange.bind(this);
+    this.handleCheckChange = this.handleCheckChange.bind(this);
+    this.handleToggleCheckAll = this.handleToggleCheckAll.bind(this);
   }
 
   handleInitColumns() {
@@ -34,7 +40,7 @@ class DataTable extends React.Component {
     let width = node.offsetWidth;
     let length = columns.length;
     const cols = [];
-    const column = {};
+    let column = {};
 
     if (this.props.checkable) {
       column.width = 40;
@@ -44,6 +50,7 @@ class DataTable extends React.Component {
       cols.push(column);
     }
     if (this.props.showIndex) {
+      column = {};
       column.width = 40;
       column.isIndex = true;
       column.visible = true;
@@ -105,12 +112,69 @@ class DataTable extends React.Component {
       this.state.data = sortBy(this.state.data, column.field);
       if (sortState.reverse) this.state.data.reverse();
     }
-    this.setState({ sortState });
-    this.handleTableChange();
+    this.setState({ sortState }, this.handleTableChange());
   }
 
   handleTableChange() {
+    const state = {
+      sortKey: this.state.sortState.sortKey,
+      reverse: this.state.sortState.reverse,
+      pagination: this.state.pagination,
+    };
+    this.props.onChange(state);
     this.handleReorganizeData();
+  }
+
+  handlePageChange(current) {
+    this.state.pagination.current = current;
+    const onPageChange = this.state.pagination.onChange;
+    if (onPageChange && isFunction(onPageChange)) {
+      onPageChange(current);
+    }
+    this.handleTableChange();
+  }
+
+  handleCheckChange(isChecked, row) {
+    const key = row[this.props.rowKey];
+    const isExist = this.state.selectedRowKeys.indexOf(key) >= 0;
+
+    if (isChecked && !isExist) {
+      this.state.selectedRowKeys.push(key);
+      this.state.selectedRows.push(row);
+    }
+
+    if (!isChecked && isExist) {
+      const checkedIndex = this.state.selectedRowKeys.indexOf(key);
+      this.state.selectedRows.splice(checkedIndex, 1);
+      this.state.selectedRowKeys.splice(checkedIndex, 1);
+    }
+
+    this.props.onCheckedChange(this.state.selectedRowKeys, this.state.selectedRows);
+  }
+
+  handleToggleCheckAll(isCheck) {
+    const selectedRows = this.state.selectedRows;
+    const selectedRowKeys = this.state.selectedRowKeys;
+
+    this.state.showData.forEach(row => {
+      const key = row[this.props.rowKey];
+      const checkedIndex = this.state.selectedRowKeys.indexOf(key);
+      const isExist = checkedIndex >= 0;
+
+      if (isCheck && !isExist) {
+        selectedRows.push(row);
+        selectedRowKeys.push(key);
+      } else if (!isCheck && isExist) {
+        selectedRows.splice(checkedIndex, 1);
+        selectedRowKeys.splice(checkedIndex, 1);
+      }
+    });
+
+    this.setState({
+      selectedRows,
+      selectedRowKeys,
+    });
+    this.props.onCheckedChange(this.state.selectedRowKeys, this.state.selectedRows);
   }
 
   componentWillMount() {
@@ -132,7 +196,9 @@ class DataTable extends React.Component {
       checkable,
       showIndex,
       rowClassName,
+      rowKey,
     } = this.props;
+    const paginationConfig = this.state.pagination;
 
     const tableStyle = this.props.height ? { height: `${this.props.height}px`, overflow: 'scroll' } : null;
 
@@ -144,10 +210,27 @@ class DataTable extends React.Component {
             <colgroup>
               {this.state.cols.map((col, index) => <col width={col.width} key={`cols-${index}`}/>)}
             </colgroup>
-            {height ? null : <TableHeader checkable={checkable} sortState={this.state.sortState} columns={this.state.cols} showIndex={showIndex} toggleSort={this.handleToggleSort}/>}
-            <TableBody data={this.state.showData} columns={this.state.cols} rowClassName={rowClassName} />
+            {height ? null :
+              <TableHeader
+                checkable={checkable}
+                sortState={this.state.sortState}
+                columns={this.state.cols}
+                showIndex={showIndex}
+                toggleSort={this.handleToggleSort}
+                toggleCheckAll={this.handleToggleCheckAll}
+              />
+            }
+            <TableBody
+              data={this.state.showData}
+              columns={this.state.cols}
+              rowClassName={rowClassName}
+              onCheckChange={this.handleCheckChange}
+              rowKey={rowKey}
+              selectedRowKeys={this.state.selectedRowKeys}
+            />
           </table>
         </div>
+        <Pagination {...paginationConfig} onChange={this.handlePageChange}/>
       </div>
     );
   }
@@ -165,6 +248,8 @@ DataTable.propTypes = {
   narrow: React.PropTypes.bool,
   pagination: React.PropTypes.object,
   rowClassName: React.PropTypes.func,
+  rowKey: React.PropTypes.string,
+  onCheckedChange: React.PropTypes.func,
 };
 
 DataTable.defaultProps = {

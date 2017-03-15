@@ -1,5 +1,5 @@
 import React from 'react';
-import { DataTable } from '../../src';
+import { DataTable, Tag } from '../../src';
 
 class DataTablePage extends React.Component {
   constructor() {
@@ -213,6 +213,15 @@ class DataTablePage extends React.Component {
     if (index % 2 == 0) return 'odd';
   }
 
+  handleChange(state) {
+    console.log(state);
+  }
+
+  handleCheckedChange(keys, rows) {
+    console.log(keys);
+    console.log(rows);
+  }
+
   render() {
     const columns = [{
       label: 'Name',
@@ -225,7 +234,7 @@ class DataTablePage extends React.Component {
     }, {
       label: 'Work No',
       field: 'work_no',
-      template: row => <div>{row.work_no}</div>
+      template: row => <Tag type="primary">{row.work_no}</Tag>
     }];
     return (
       <div className="content" style={{ height: '10000px' }}>
@@ -234,9 +243,13 @@ class DataTablePage extends React.Component {
           <DataTable
             columns={columns}
             showIndex={true}
+            checkable={true}
             data={this.data}
             pagination={{ total: 200 }}
             rowClassName={this.rowClassName}
+            onChange={this.handleChange}
+            onCheckedChange={this.handleCheckedChange}
+            rowKey="id"
           >
           </DataTable>
         </div>

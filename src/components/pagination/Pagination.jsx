@@ -13,7 +13,6 @@ class Pagination extends React.Component {
     };
 
     this.uniqueKey = shortid.generate();
-    console.log(this.uniqueKey);
 
     this.hasPrev = this.hasPrev.bind(this);
     this.hasNext = this.hasNext.bind(this);
