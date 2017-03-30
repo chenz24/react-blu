@@ -1,3 +1,3 @@
-import Transition from './TransitionCss';
+import Transition from './Transition';
 
 export default Transition;

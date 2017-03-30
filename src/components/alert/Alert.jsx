@@ -6,13 +6,14 @@ class Alert extends React.Component {
     super(props);
     this.state = {
       closed: false,
+      doClosed: false,
     };
   }
 
   handleClose() {
     this.setState({
       closed: true,
-    });
+    }, this.props.onClose);
   }
 
   render() {
@@ -40,6 +41,7 @@ class Alert extends React.Component {
           iconClass = '';
       }
     }
+    const hasIcon = iconClass ? 'has-icon' : '';
 
     let faSpin = null;
     if (type === 'loading' || animated) faSpin = 'fa-spin';
@@ -50,16 +52,21 @@ class Alert extends React.Component {
     } else {
       typeClass = type ? `is-${type}` : '';
     }
+
     return (
-      <Transition>
-        {this.state.closed ? null : (
-          <div className={`notification alert ${typeClass}`}>
-            {closable ? <button className="delete" onClick={this.handleClose.bind(this)}></button> : null}
-            {title ? <div className="title">{title}</div> : null}
-            {icon ? <div className="wrap-icon"><i className={`fa fa-${iconClass} ${faSpin}`}></i></div> : null}
-            <div className="notification-content">{children}</div>
-          </div>
-        )}
+      <Transition
+        in={!this.state.closed}
+        enteringClassName="fade"
+        exitingClassName="fade"
+        unmountOnExit={true}
+        timeout={300}
+      >
+        <div className={`notification alert ${typeClass} ${hasIcon}`}>
+          {closable ? <button className="delete" onClick={this.handleClose.bind(this)}></button> : null}
+          {title ? <div className="title">{title}</div> : null}
+          {iconClass ? <div className="wrap-icon"><i className={`fa fa-${iconClass} ${faSpin}`}></i></div> : null}
+          <div className="notification-content">{children}</div>
+        </div>
       </Transition>
     );
   }
