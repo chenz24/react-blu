@@ -7,6 +7,8 @@ class TableHeader extends React.Component {
 
     this.state = {
       isChecked: false,
+      currentPage: 1,
+      isCheckAll: false,
     };
     this.handleToggleCheckAll = this.handleToggleCheckAll.bind(this);
   }
@@ -17,6 +19,21 @@ class TableHeader extends React.Component {
     }, this.props.toggleCheckAll(!this.state.isChecked));
   }
 
+  componentWillMount() {
+    this.setState({ currentPage: this.props.currentPage });
+    const isCheckAll = this.props.getIsCheckAll();
+    this.setState({ isCheckAll });
+    console.log(isCheckAll);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.setState({ currentPage: nextProps.currentPage });
+    if (this.props.checkable) {
+      const isCheckAll = this.props.getIsCheckAll();
+      this.setState({ isCheckAll });
+    }
+  }
+
   render() {
     const {
       columns,
@@ -24,18 +41,19 @@ class TableHeader extends React.Component {
       // showIndex,
       toggleSort,
       sortState,
+      currentPage,
     } = this.props;
 
     return (
       <thead>
-        <tr>
+        <tr key={`header-${this.state.currentPage}`}>
           {columns.map((column, index) => {
             if (!column.visible) return null;
             if (column.isCheck) {
-              return <th key={`check-${index}`}><input type="checkbox" onChange={this.handleToggleCheckAll}/></th>;
+              return <th key={`check-${currentPage}`}><input type="checkbox" checked={this.state.isCheckAll} onChange={this.handleToggleCheckAll}/></th>;
             }
             if (column.isIndex) {
-              return <th key={`index-${index}`}>#</th>;
+              return <th key={`index-${currentPage}`}>#</th>;
             }
 
             let sorterEl = '';
@@ -74,6 +92,8 @@ TableHeader.propTypes = {
   sortState: React.PropTypes.object,
   toggleCheckAll: React.PropTypes.func,
   selectedRowKeys: React.PropTypes.array,
+  getIsCheckAll: React.PropTypes.func,
+  currentPage: React.PropTypes.number,
 };
 
 export default TableHeader;

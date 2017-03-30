@@ -32,6 +32,7 @@ class DataTable extends React.Component {
     this.handlePageChange = this.handlePageChange.bind(this);
     this.handleCheckChange = this.handleCheckChange.bind(this);
     this.handleToggleCheckAll = this.handleToggleCheckAll.bind(this);
+    this.getIsCheckAll = this.getIsCheckAll.bind(this);
   }
 
   handleInitColumns() {
@@ -137,18 +138,24 @@ class DataTable extends React.Component {
   handleCheckChange(isChecked, row) {
     const key = row[this.props.rowKey];
     const isExist = this.state.selectedRowKeys.indexOf(key) >= 0;
+    const selectedRows = this.state.selectedRows;
+    const selectedRowKeys = this.state.selectedRowKeys;
 
     if (isChecked && !isExist) {
-      this.state.selectedRowKeys.push(key);
-      this.state.selectedRows.push(row);
+      selectedRowKeys.push(key);
+      selectedRows.push(row);
     }
 
     if (!isChecked && isExist) {
       const checkedIndex = this.state.selectedRowKeys.indexOf(key);
-      this.state.selectedRows.splice(checkedIndex, 1);
-      this.state.selectedRowKeys.splice(checkedIndex, 1);
+      selectedRows.splice(checkedIndex, 1);
+      selectedRowKeys.splice(checkedIndex, 1);
     }
 
+    this.setState({
+      selectedRows,
+      selectedRowKeys,
+    });
     this.props.onCheckedChange(this.state.selectedRowKeys, this.state.selectedRows);
   }
 
@@ -175,6 +182,15 @@ class DataTable extends React.Component {
       selectedRowKeys,
     });
     this.props.onCheckedChange(this.state.selectedRowKeys, this.state.selectedRows);
+  }
+
+  getIsCheckAll() {
+    const checkAll = this.state.showData.some(row => {
+      const key = row[this.props.rowKey];
+      return this.state.selectedRowKeys.indexOf(key) < 0;
+    });
+
+    return !checkAll;
   }
 
   componentWillMount() {
@@ -218,6 +234,8 @@ class DataTable extends React.Component {
                 showIndex={showIndex}
                 toggleSort={this.handleToggleSort}
                 toggleCheckAll={this.handleToggleCheckAll}
+                getIsCheckAll={this.getIsCheckAll}
+                currentPage={this.state.pagination.current}
               />
             }
             <TableBody

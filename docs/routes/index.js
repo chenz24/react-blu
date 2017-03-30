@@ -6,6 +6,7 @@ import NotifyPage from '../pages/NotifyPage';
 import ModalPage from '../pages/ModalPage';
 import DataTablePage from '../pages/DataTablePage';
 import PaginationPage from '../pages/PaginationPage';
+import MenuPage from '../pages/MenuPage';
 
 export default [
   {
@@ -36,6 +37,9 @@ export default [
     }, {
       path: 'pagination',
       component: PaginationPage,
+    }, {
+      path: 'menu',
+      component: MenuPage,
     }],
   },
 ];

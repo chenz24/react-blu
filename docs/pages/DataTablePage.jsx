@@ -244,6 +244,7 @@ class DataTablePage extends React.Component {
             columns={columns}
             showIndex={true}
             checkable={true}
+            bordered={true}
             data={this.data}
             pagination={{ total: 200 }}
             rowClassName={this.rowClassName}

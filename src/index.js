@@ -18,3 +18,5 @@ export { default as DataTable } from './components/table/DataTable';
 
 export { default as Pagination } from './components/pagination';
 
+export { default as Menus } from './components/menu/Menus';
+export { default as Menu } from './components/menu/Menu';
