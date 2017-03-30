@@ -105,7 +105,12 @@ class Modal extends React.Component {
 
     const modalEL = (
       <div className={modalClass}>
-        {backdrop ? <div className="modal-background" onClick={this.handleBackdropClose}></div> : null}
+        {backdrop ?
+          <Transition in={isOpen} enteringClassName="fade" exitingClassName="fade">
+            <div className="modal-background" onClick={this.handleBackdropClose}></div>
+          </Transition>
+          : null
+        }
         <Transition
           in={isOpen}
           enteringClassName={transition}
