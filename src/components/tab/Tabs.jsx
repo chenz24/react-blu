@@ -7,6 +7,7 @@ class Tabs extends React.Component {
 
     this.state = {
       selectedIndex: props.activeIndex,
+      transition: '',
     };
     this.handleSelect = this.handleSelect.bind(this);
   }
@@ -16,13 +17,32 @@ class Tabs extends React.Component {
   }
 
   handleSelect(index) {
+    const selectedIndex = index;
+    let transition = this.state.transition;
+    if (this.props.transition === 'fadeLeftRight') {
+      transition = index < this.state.selectedIndex ? 'fadeRight' : 'fadeLeft';
+    } else if (this.props.transition === 'fadeUpDown') {
+      transition = index < this.state.selectedIndex ? 'fadeUp' : 'fadeDown';
+    }
+
     this.setState({
-      selectedIndex: index,
+      selectedIndex,
+      transition,
     });
 
-    // React.Children.forEach(this.props.children, (tab, index) => {
-    //
-    // });
+    this.props.onTabClick(index, this.props.children[index]);
+  }
+
+  componentWillMount() {
+    let transition = this.props.transition;
+    if (this.props.transition === 'fadeLeftRight') {
+      transition = 'fadeLeft';
+    } else if (this.props.transition === 'fadeUpDown') {
+      transition = 'fadeUpDown';
+    }
+    this.setState({
+      transition,
+    });
   }
 
   render() {
@@ -31,10 +51,10 @@ class Tabs extends React.Component {
       type,
       size,
       alignment,
-      unmountOnExit,
       children,
     } = this.props;
     const selectedIndex = this.state.selectedIndex;
+    const transition = this.state.transition;
 
     const alignClass = alignment ? `is-${alignment}` : null;
     const typeClass = type ? `is-${type}` : null;
@@ -61,12 +81,8 @@ class Tabs extends React.Component {
       );
       tabEls.push(tabEl);
 
-      if (unmountOnExit && isActive) {
-        tabItems.push(tab);
-      } else if (!unmountOnExit) {
-        const cloneTab = React.cloneElement(tab, { isActive });
-        tabItems.push(<div className={classNames({ 'is-active': isActive })}>{cloneTab}</div>);
-      }
+      const cloneTab = React.cloneElement(tab, { isActive, transition, key: `tab-content-${index}` });
+      tabItems.push(cloneTab);
     });
 
     return (
@@ -86,12 +102,15 @@ Tabs.propTypes = {
   onTabClick: React.PropTypes.func,
   activeIndex: React.PropTypes.number,
   unmountOnExit: React.PropTypes.bool,
+  transition: React.PropTypes.string,
 };
 
 Tabs.defaultProps = {
   layout: 'top',
   activeIndex: 0,
   unmountOnExit: true,
+  transition: 'fade',
+  onTabClick: () => {},
 };
 
 export default Tabs;

@@ -176,7 +176,21 @@ class Transition extends React.Component {
     }
   }
 
+  handleGetExitingClassName() {
+    const className = this.props.enteringClassName;
+    if (className.indexOf('Left') > -1) {
+      const index = this.props.enteringClassName.indexOf('Left');
+      return `${className.slice(0, index)}Right`;
+    }
+    if (className.indexOf('Right') > -1) {
+      const index = this.props.enteringClassName.indexOf('Right');
+      return `${className.slice(0, index)}Left`;
+    }
+    return className;
+  }
+
   render() {
+    console.log('nextProps.in', this.props.in);
     const status = this.state.status;
     if (status === UNMOUNTED) {
       return null;
@@ -193,7 +207,8 @@ class Transition extends React.Component {
     } else if (status === ENTERED) {
       transitionClassName = this.props.enteredClassName;
     } else if (status === EXITING) {
-      transitionClassName = `${this.props.exitingClassName}${this.props.exitingClassNameAffix}`;
+      const exitingClassName = this.props.exitingClassName ? this.props.exitingClassName : this.handleGetExitingClassName();
+      transitionClassName = `${exitingClassName}${this.props.exitingClassNameAffix}`;
     }
 
     const child = React.Children.only(children);

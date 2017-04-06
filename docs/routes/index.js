@@ -8,6 +8,10 @@ import DataTablePage from '../pages/DataTablePage';
 import PaginationPage from '../pages/PaginationPage';
 import MenuPage from '../pages/MenuPage';
 import AlertPage from '../pages/AlertPage';
+import TagPage from '../pages/TagPage';
+import TabPage from '../pages/TabPage';
+import AsidePage from '../pages/AsidePage';
+import TooltipPage from '../pages/TooltipPage';
 
 export default [
   {
@@ -44,6 +48,18 @@ export default [
     }, {
       path: 'alert',
       component: AlertPage,
+    }, {
+      path: 'tag',
+      component: TagPage,
+    }, {
+      path: 'tabs',
+      component: TabPage,
+    }, {
+      path: 'aside',
+      component: AsidePage,
+    }, {
+      path: 'tooltip',
+      component: TooltipPage,
     }],
   },
 ];

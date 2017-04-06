@@ -35,13 +35,17 @@ class Tag extends React.Component {
     const tagClasses = classNames('tag', typeClass, sizeClass, roundedClass);
 
     return (
-      <Transition>
-        {this.state.isShow ? (
-          <span className={tagClasses}>
-            {children}
-            {closable ? <button className={classNames(btnClass, 'delete')} onClick={this.handleClose}></button> : null}
-          </span>
-        ) : null}
+      <Transition
+        in={this.state.isShow}
+        enteringClassName="fade"
+        exitingClassName="fade"
+        unmountOnExit={true}
+        timeout={300}
+      >
+        <span className={tagClasses}>
+          {children}
+        {closable ? <button className={classNames(btnClass, 'delete')} onClick={this.handleClose}></button> : null}
+        </span>
       </Transition>
     );
   }

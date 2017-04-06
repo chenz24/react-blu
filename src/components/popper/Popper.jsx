@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import PopperJS from 'popper.js';
-import Transition from '../transition/Transition';
+import PopperJS from 'popper.js'; // eslint-disable-line
+import Transition from '../transition';
 
 class Popper extends React.Component {
   constructor() {

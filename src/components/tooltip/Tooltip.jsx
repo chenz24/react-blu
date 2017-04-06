@@ -20,6 +20,7 @@ Tooltip.propTypes = {
   disabled: React.PropTypes.bool,
   appendToBody: React.PropTypes.bool,
   content: React.PropTypes.string,
+  placement: React.PropTypes.string,
 };
 
 Tooltip.defaultProps = {

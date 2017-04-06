@@ -1,6 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import Transition from '../transition/Transition';
+import Transition from '../transition';
 
 class TabItem extends React.Component {
   constructor() {
@@ -12,21 +12,27 @@ class TabItem extends React.Component {
   }
 
   componentWillMount() {
-    console.log('mount');
+    this.setState({
+      isActive: this.props.isActive,
+    });
   }
 
   componentWillReceiveProps(nextProps) {
-    console.log('props', nextProps);
-    setTimeout(() => {
-      this.setState({
-        isActive: true,
-      });
-    }, 300);
+    this.setState({
+      isActive: nextProps.isActive,
+    });
   }
 
   render() {
+    const transition = this.props.transition;
     return (
-      <Transition enteringClassName="bounceIn" in={this.state.isActive} transitionAppear={true}>
+      <Transition
+        enteringClassName={transition}
+        in={this.state.isActive}
+        transitionAppear={true}
+        unmountOnExit={true}
+        timeout={300}
+      >
         <div className={classNames('tab-pane', 'is-active')} key={this.props.label}>{this.props.children}</div>
       </Transition>
     );
@@ -38,6 +44,7 @@ TabItem.propTypes = {
   icon: React.PropTypes.string,
   disabled: React.PropTypes.bool,
   isActive: React.PropTypes.bool,
+  transition: React.PropTypes.string,
 };
 
 TabItem.defaultProps = {

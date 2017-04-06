@@ -72,10 +72,11 @@ class Modal extends React.Component {
       children,
       needPortal,
       wrapClass,
+      defaultClass,
     } = this.props;
 
     const isOpen = this.state.isOpen;
-    const modalClass = classNames('modal', 'align-baseline', 'is-active', { 'modal-hidden': !isOpen }, wrapClass);
+    const modalClass = classNames(defaultClass, 'is-active', { 'modal-hidden': !isOpen }, wrapClass);
 
     let headerEl = null;
     if (showHeader) {
@@ -154,6 +155,7 @@ Modal.propTypes = {
   footer: React.PropTypes.node,
   needPortal: React.PropTypes.bool,
   wrapClass: React.PropTypes.string,
+  defaultClass: React.PropTypes.string,
 };
 
 Modal.defaultProps = {
@@ -173,6 +175,7 @@ Modal.defaultProps = {
   onClose: () => {},
   asyncConfirm: false,
   needPortal: true,
+  defaultClass: 'modal align-baseline',
 };
 
 export default Modal;

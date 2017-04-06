@@ -66,7 +66,6 @@ class Portal extends React.Component {
       } else {
         resetPortalState();
       }
-
       // this.props.onClose();
     }
   }
